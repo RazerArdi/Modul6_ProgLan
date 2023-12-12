@@ -50,7 +50,6 @@ public class Modul6_Lat2 extends Application {
         vbox.setPadding(new Insets(20, 10, 10, 10));
         vbox.getChildren().addAll(label, table);
 
-        // Data initialization
         final ObservableList<Mahasiswa> data = FXCollections.observableArrayList(
                 new Mahasiswa("Larynt", "202110370311189", "laryntsa@gmail.com"),
                 new Mahasiswa("Ahya", "202110370311187", "ayaa@gmail.com")
@@ -62,7 +61,6 @@ public class Modul6_Lat2 extends Application {
 
         table.setItems(data);
 
-        // Input fields and Add button
         final TextField addName = new TextField();
         addName.setMaxWidth(nameCol.getPrefWidth());
         addName.setPromptText("Nama Mahasiswa");
