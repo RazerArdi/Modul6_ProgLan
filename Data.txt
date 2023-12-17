@@ -1,2 +1,0 @@
-Bayu,202210370311025,bayu@webmail.umm.ac.id,Teknik,CS,mmm,Malang
-Jokowi,202110370311235,Jokowi@webmail.umm.ac.id,Teknik,Sastra Mesin,Jogja,Asgard

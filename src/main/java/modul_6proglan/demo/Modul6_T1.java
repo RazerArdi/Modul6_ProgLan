@@ -131,7 +131,6 @@ public class Modul6_T1 extends Application {
         alamatCol.setCellValueFactory(new PropertyValueFactory<>("alamat"));
         kotaCol.setCellValueFactory(new PropertyValueFactory<>("kota"));
 
-        // Load existing data from the file on startup
         loadExistingData("Data.txt");
 
         ((Group) scene.getRoot()).getChildren().addAll(vbox);
@@ -170,7 +169,6 @@ public class Modul6_T1 extends Application {
     private void clearData() {
         table.getItems().clear();
         clearFields();
-        // Clear data in the file
         saveDataToFile("Data.txt", table.getItems());
     }
 
