@@ -23,15 +23,15 @@ import java.nio.file.Paths;
 import java.util.List;
 
 public class Modul6_T1 extends Application {
-    private TableView<Mahasiswa> table = new TableView<>();
+    private TableView<Mahasiswa> tabel = new TableView<>();
 
-    private TextField addNama;
-    private TextField addNim;
-    private TextField addEmail;
-    private TextField addFakultas;
-    private TextField addJurusan;
-    private TextField addAlamat;
-    private TextField addKota;
+    private TextField tambahNama;
+    private TextField tambahNim;
+    private TextField tambahEmail;
+    private TextField tambahFakultas;
+    private TextField tambahJurusan;
+    private TextField tambahAlamat;
+    private TextField tambahKota;
 
     public static void main(String[] args) {
         launch(args);
@@ -47,89 +47,93 @@ public class Modul6_T1 extends Application {
         final Label label = new Label("Form Biodata Mahasiswa");
         label.setFont(new Font("Arial", 20));
 
-        table.setEditable(true);
+        tabel.setEditable(true);
 
-        TableColumn<Mahasiswa, String> namaCol = new TableColumn<>("Nama");
-        TableColumn<Mahasiswa, String> nimCol = new TableColumn<>("NIM");
-        TableColumn<Mahasiswa, String> emailCol = new TableColumn<>("Email");
-        TableColumn<Mahasiswa, String> fakultasCol = new TableColumn<>("Fakultas");
-        TableColumn<Mahasiswa, String> jurusanCol = new TableColumn<>("Jurusan");
-        TableColumn<Mahasiswa, String> alamatCol = new TableColumn<>("Alamat");
-        TableColumn<Mahasiswa, String> kotaCol = new TableColumn<>("Kota");
+        TableColumn<Mahasiswa, String> namaKolom = new TableColumn<>("Nama");
+        TableColumn<Mahasiswa, String> nimKolom = new TableColumn<>("NIM");
+        TableColumn<Mahasiswa, String> emailKolom = new TableColumn<>("Email");
+        TableColumn<Mahasiswa, String> fakultasKolom = new TableColumn<>("Fakultas");
+        TableColumn<Mahasiswa, String> jurusanKolom = new TableColumn<>("Jurusan");
+        TableColumn<Mahasiswa, String> alamatKolom = new TableColumn<>("Alamat");
+        TableColumn<Mahasiswa, String> kotaKolom = new TableColumn<>("Kota");
 
-        table.getColumns().addAll(namaCol, nimCol, emailCol, fakultasCol, jurusanCol, alamatCol, kotaCol);
+        tabel.getColumns().addAll(namaKolom, nimKolom, emailKolom, fakultasKolom, jurusanKolom, alamatKolom, kotaKolom);
 
         final VBox vbox = new VBox();
         vbox.setSpacing(8);
         vbox.setPadding(new Insets(20, 10, 10, 10));
-        vbox.getChildren().addAll(label, table);
+        vbox.getChildren().addAll(label, tabel);
 
-        addNama = new TextField();
-        addNama.setPromptText("Nama Mahasiswa");
+        tambahNama = new TextField();
+        tambahNama.setPromptText("Nama Mahasiswa");
 
-        addNim = new TextField();
-        addNim.setPromptText("NIM");
+        tambahNim = new TextField();
+        tambahNim.setPromptText("NIM");
 
-        addEmail = new TextField();
-        addEmail.setPromptText("Email");
+        tambahEmail = new TextField();
+        tambahEmail.setPromptText("Email");
 
-        addFakultas = new TextField();
-        addFakultas.setPromptText("Fakultas");
+        tambahFakultas = new TextField();
+        tambahFakultas.setPromptText("Fakultas");
 
-        addJurusan = new TextField();
-        addJurusan.setPromptText("Jurusan");
+        tambahJurusan = new TextField();
+        tambahJurusan.setPromptText("Jurusan");
 
-        addAlamat = new TextField();
-        addAlamat.setPromptText("Alamat");
+        tambahAlamat = new TextField();
+        tambahAlamat.setPromptText("Alamat");
 
-        addKota = new TextField();
-        addKota.setPromptText("Kota");
+        tambahKota = new TextField();
+        tambahKota.setPromptText("Kota");
 
-        final Button createButton = new Button("Create");
-        createButton.setOnAction(new EventHandler<ActionEvent>() {
+        final Button tombolBuat = new Button("Buat");
+        tombolBuat.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
                 if (validateInput()) {
-                    Mahasiswa newMahasiswa = new Mahasiswa(
-                            addNama.getText(),
-                            addNim.getText(),
-                            addEmail.getText(),
-                            addFakultas.getText(),
-                            addJurusan.getText(),
-                            addAlamat.getText(),
-                            addKota.getText()
+                    Mahasiswa mahasiswaBaru = new Mahasiswa(
+                            tambahNama.getText(),
+                            tambahNim.getText(),
+                            tambahEmail.getText(),
+                            tambahFakultas.getText(),
+                            tambahJurusan.getText(),
+                            tambahAlamat.getText(),
+                            tambahKota.getText()
                     );
 
-                    table.getItems().add(newMahasiswa);
+                    tabel.getItems().add(mahasiswaBaru);
 
-                    saveDataToFile("Data.txt", table.getItems());
+                    saveDataToFile("Data.txt", tabel.getItems());
 
                     clearFields();
                 }
             }
         });
 
-        final Button clearDataButton = new Button("Clear Data");
-        clearDataButton.setOnAction(new EventHandler<ActionEvent>() {
+        final Button tombolHapusData = new Button("Hapus Data yang Dipilih");
+        tombolHapusData.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                clearData();
+                Mahasiswa mahasiswaDipilih = tabel.getSelectionModel().getSelectedItem();
+                if (mahasiswaDipilih != null) {
+                    tabel.getItems().remove(mahasiswaDipilih);
+                    saveDataToFile("Data.txt", tabel.getItems());
+                }
             }
         });
 
         final HBox hboxInput = new HBox(10);
-        hboxInput.getChildren().addAll(addNama, addNim, addEmail, addFakultas, addJurusan, addAlamat, addKota, createButton, clearDataButton);
+        hboxInput.getChildren().addAll(tambahNama, tambahNim, tambahEmail, tambahFakultas, tambahJurusan, tambahAlamat, tambahKota, tombolBuat, tombolHapusData);
 
         vbox.getChildren().addAll(hboxInput);
 
         // Set cell value factories
-        namaCol.setCellValueFactory(new PropertyValueFactory<>("nama"));
-        nimCol.setCellValueFactory(new PropertyValueFactory<>("nim"));
-        emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
-        fakultasCol.setCellValueFactory(new PropertyValueFactory<>("fakultas"));
-        jurusanCol.setCellValueFactory(new PropertyValueFactory<>("jurusan"));
-        alamatCol.setCellValueFactory(new PropertyValueFactory<>("alamat"));
-        kotaCol.setCellValueFactory(new PropertyValueFactory<>("kota"));
+        namaKolom.setCellValueFactory(new PropertyValueFactory<>("nama"));
+        nimKolom.setCellValueFactory(new PropertyValueFactory<>("nim"));
+        emailKolom.setCellValueFactory(new PropertyValueFactory<>("email"));
+        fakultasKolom.setCellValueFactory(new PropertyValueFactory<>("fakultas"));
+        jurusanKolom.setCellValueFactory(new PropertyValueFactory<>("jurusan"));
+        alamatKolom.setCellValueFactory(new PropertyValueFactory<>("alamat"));
+        kotaKolom.setCellValueFactory(new PropertyValueFactory<>("kota"));
 
         loadExistingData("Data.txt");
 
@@ -140,36 +144,40 @@ public class Modul6_T1 extends Application {
     }
 
     private boolean validateInput() {
-        if (addNama.getText().isEmpty() || addNim.getText().isEmpty() || addEmail.getText().isEmpty() ||
-                addFakultas.getText().isEmpty() || addJurusan.getText().isEmpty() || addAlamat.getText().isEmpty() ||
-                addKota.getText().isEmpty()) {
-            showAlert(AlertType.ERROR, "Error", "Input Error", "Please fill in all fields.");
+        if (tambahNama.getText().isEmpty() || tambahNim.getText().isEmpty() || tambahEmail.getText().isEmpty() ||
+                tambahFakultas.getText().isEmpty() || tambahJurusan.getText().isEmpty() || tambahAlamat.getText().isEmpty() ||
+                tambahKota.getText().isEmpty()) {
+            showAlert(AlertType.ERROR, "Error", "Kesalahan Input", "Harap isi semua kolom.");
             return false;
         }
 
         try {
-            long nimValue = Long.parseLong(addNim.getText());
+            long nimValue = Long.parseLong(tambahNim.getText());
 
             if (String.valueOf(nimValue).length() >= 20) {
                 throw new NumberFormatException();
             }
         } catch (NumberFormatException e) {
-            showAlert(AlertType.ERROR, "Error", "Input Error", "NIM must be a valid number with less than 20 digits.");
+            showAlert(AlertType.ERROR, "Error", "Kesalahan Input", "NIM harus angka valid dengan kurang dari 20 digit.");
             return false;
         }
 
-        if (!addEmail.getText().endsWith("@webmail.umm.ac.id")) {
-            showAlert(AlertType.ERROR, "Error", "Input Error", "Email must end with @webmail.umm.ac.id");
+        if (!tambahEmail.getText().endsWith("@webmail.umm.ac.id")) {
+            showAlert(AlertType.ERROR, "Error", "Kesalahan Input", "Email harus diakhiri dengan @webmail.umm.ac.id");
             return false;
         }
 
         return true;
     }
 
-    private void clearData() {
-        table.getItems().clear();
-        clearFields();
-        saveDataToFile("Data.txt", table.getItems());
+    private void clearFields() {
+        tambahNama.clear();
+        tambahNim.clear();
+        tambahEmail.clear();
+        tambahFakultas.clear();
+        tambahJurusan.clear();
+        tambahAlamat.clear();
+        tambahKota.clear();
     }
 
     private void loadExistingData(String filename) {
@@ -181,7 +189,7 @@ public class Modul6_T1 extends Application {
                 for (String line : lines) {
                     String[] parts = line.split(",");
                     Mahasiswa mahasiswa = new Mahasiswa(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5], parts[6]);
-                    table.getItems().add(mahasiswa);
+                    tabel.getItems().add(mahasiswa);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -212,16 +220,6 @@ public class Modul6_T1 extends Application {
         alert.setHeaderText(header);
         alert.setContentText(content);
         alert.showAndWait();
-    }
-
-    private void clearFields() {
-        addNama.clear();
-        addNim.clear();
-        addEmail.clear();
-        addFakultas.clear();
-        addJurusan.clear();
-        addAlamat.clear();
-        addKota.clear();
     }
 
     public static class Mahasiswa {
