@@ -1,8 +1,6 @@
 package modul_6proglan.demo;
 
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -16,16 +14,24 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+
 public class Modul6_T1 extends Application {
     private TableView<Mahasiswa> table = new TableView<>();
 
-    private TextField addNama;  // Declare at the class level
-    private TextField addNim;   // Declare at the class level
-    private TextField addEmail;  // Declare at the class level
-    private TextField addFakultas;  // Declare at the class level
-    private TextField addJurusan;   // Declare at the class level
-    private TextField addAlamat;    // Declare at the class level
-    private TextField addKota;      // Declare at the class level
+    private TextField addNama;
+    private TextField addNim;
+    private TextField addEmail;
+    private TextField addFakultas;
+    private TextField addJurusan;
+    private TextField addAlamat;
+    private TextField addKota;
 
     public static void main(String[] args) {
         launch(args);
@@ -58,7 +64,6 @@ public class Modul6_T1 extends Application {
         vbox.setPadding(new Insets(20, 10, 10, 10));
         vbox.getChildren().addAll(label, table);
 
-        // Input fields and Create button
         addNama = new TextField();
         addNama.setPromptText("Nama Mahasiswa");
 
@@ -97,13 +102,23 @@ public class Modul6_T1 extends Application {
 
                     table.getItems().add(newMahasiswa);
 
+                    saveDataToFile("Data.txt", table.getItems());
+
                     clearFields();
                 }
             }
         });
 
+        final Button clearDataButton = new Button("Clear Data");
+        clearDataButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                clearData();
+            }
+        });
+
         final HBox hboxInput = new HBox(10);
-        hboxInput.getChildren().addAll(addNama, addNim, addEmail, addFakultas, addJurusan, addAlamat, addKota, createButton);
+        hboxInput.getChildren().addAll(addNama, addNim, addEmail, addFakultas, addJurusan, addAlamat, addKota, createButton, clearDataButton);
 
         vbox.getChildren().addAll(hboxInput);
 
@@ -115,6 +130,9 @@ public class Modul6_T1 extends Application {
         jurusanCol.setCellValueFactory(new PropertyValueFactory<>("jurusan"));
         alamatCol.setCellValueFactory(new PropertyValueFactory<>("alamat"));
         kotaCol.setCellValueFactory(new PropertyValueFactory<>("kota"));
+
+        // Load existing data from the file on startup
+        loadExistingData("Data.txt");
 
         ((Group) scene.getRoot()).getChildren().addAll(vbox);
 
@@ -131,9 +149,13 @@ public class Modul6_T1 extends Application {
         }
 
         try {
-            Integer.parseInt(addNim.getText());
+            long nimValue = Long.parseLong(addNim.getText());
+
+            if (String.valueOf(nimValue).length() >= 20) {
+                throw new NumberFormatException();
+            }
         } catch (NumberFormatException e) {
-            showAlert(AlertType.ERROR, "Error", "Input Error", "NIM must be a number.");
+            showAlert(AlertType.ERROR, "Error", "Input Error", "NIM must be a valid number with less than 20 digits.");
             return false;
         }
 
@@ -143,6 +165,47 @@ public class Modul6_T1 extends Application {
         }
 
         return true;
+    }
+
+    private void clearData() {
+        table.getItems().clear();
+        clearFields();
+        // Clear data in the file
+        saveDataToFile("Data.txt", table.getItems());
+    }
+
+    private void loadExistingData(String filename) {
+        Path path = Paths.get(filename);
+
+        if (Files.exists(path)) {
+            try {
+                List<String> lines = Files.readAllLines(path);
+                for (String line : lines) {
+                    String[] parts = line.split(",");
+                    Mahasiswa mahasiswa = new Mahasiswa(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5], parts[6]);
+                    table.getItems().add(mahasiswa);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void saveDataToFile(String filename, List<Mahasiswa> mahasiswaList) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+            for (Mahasiswa mahasiswa : mahasiswaList) {
+                writer.write(String.format("%s,%s,%s,%s,%s,%s,%s%n",
+                        mahasiswa.getNama(),
+                        mahasiswa.getNim(),
+                        mahasiswa.getEmail(),
+                        mahasiswa.getFakultas(),
+                        mahasiswa.getJurusan(),
+                        mahasiswa.getAlamat(),
+                        mahasiswa.getKota()));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void showAlert(AlertType alertType, String title, String header, String content) {
@@ -211,4 +274,3 @@ public class Modul6_T1 extends Application {
         }
     }
 }
-
