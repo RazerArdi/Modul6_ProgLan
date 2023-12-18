@@ -43,7 +43,7 @@ public class Modul6_T2 extends Application {
     @Override
     public void start(Stage stage) {
         Scene scene = new Scene(new Group());
-        stage.setTitle("Aplikasi Jadwal Kuliah");
+        stage.setTitle("Aplikasi Jadwal Kuliah1");
         stage.setWidth(800);
         stage.setHeight(600);
 

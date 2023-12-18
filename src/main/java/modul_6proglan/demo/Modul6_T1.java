@@ -40,7 +40,7 @@ public class Modul6_T1 extends Application {
     @Override
     public void start(Stage stage) {
         Scene scene = new Scene(new Group());
-        stage.setTitle("Form Biodata Mahasiswa");
+        stage.setTitle("Form Biodata Mahasiswa V1.0");
         stage.setWidth(600);
         stage.setHeight(500);
 
@@ -126,7 +126,6 @@ public class Modul6_T1 extends Application {
 
         vbox.getChildren().addAll(hboxInput);
 
-        // Set cell value factories
         namaKolom.setCellValueFactory(new PropertyValueFactory<>("nama"));
         nimKolom.setCellValueFactory(new PropertyValueFactory<>("nim"));
         emailKolom.setCellValueFactory(new PropertyValueFactory<>("email"));
