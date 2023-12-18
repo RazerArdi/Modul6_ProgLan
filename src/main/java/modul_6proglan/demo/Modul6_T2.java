@@ -62,7 +62,7 @@ public class Modul6_T2 extends Application {
         table.getColumns().addAll(deleteCol, namaDosenCol, mataKuliahCol, gkbCol, waktuCol, ruanganCol);
 
         final VBox vbox = new VBox();
-        vbox.setSpacing(2);
+        vbox.setSpacing(10);
         vbox.setPadding(new Insets(20, 10, 10, 10));
         vbox.getChildren().addAll(label, table);
 
@@ -148,7 +148,6 @@ public class Modul6_T2 extends Application {
 
         vbox.getChildren().addAll(hboxInput);
 
-        // Set cell value factories
         deleteCol.setCellValueFactory(cellData -> cellData.getValue().deleteProperty());
         deleteCol.setCellFactory(CheckBoxTableCell.forTableColumn(deleteCol));
         deleteCol.setEditable(true);

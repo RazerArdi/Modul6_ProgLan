@@ -60,7 +60,7 @@ public class Modul6_T1 extends Application {
         tabel.getColumns().addAll(namaKolom, nimKolom, emailKolom, fakultasKolom, jurusanKolom, alamatKolom, kotaKolom);
 
         final VBox vbox = new VBox();
-        vbox.setSpacing(8);
+        vbox.setSpacing(50);
         vbox.setPadding(new Insets(20, 10, 10, 10));
         vbox.getChildren().addAll(label, tabel);
 
