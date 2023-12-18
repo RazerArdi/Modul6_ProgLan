@@ -62,7 +62,7 @@ public class Modul6_T2 extends Application {
         table.getColumns().addAll(deleteCol, namaDosenCol, mataKuliahCol, gkbCol, waktuCol, ruanganCol);
 
         final VBox vbox = new VBox();
-        vbox.setSpacing(8);
+        vbox.setSpacing(2);
         vbox.setPadding(new Insets(20, 10, 10, 10));
         vbox.getChildren().addAll(label, table);
 
@@ -237,12 +237,12 @@ public class Modul6_T2 extends Application {
                 Set<String> existingWaktuSet = entry.getValue();
 
                 if (existingRuangan.equals(ruangan) && existingWaktuSet.contains(waktu)) {
-                    return true; // Conflict: Same room at the same time
+                    return true;
                 }
             }
         }
 
-        return false; // No conflict
+        return false;
     }
 
     private void updateRuanganOptions(String gkb) {
